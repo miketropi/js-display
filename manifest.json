@@ -1,0 +1,20 @@
+{
+  "name": "JS Display",
+  "description": "List all JavaScript, CSS file include on website.",
+  "version": "1.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "./dist/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*/*", "http://*/*"],
+      "js": ["./dist/content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": ["storage", "tabs", "activeTab", "scripting"]
+}
