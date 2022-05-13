@@ -812,9 +812,10 @@ var ScriptLoop = function ScriptLoop(_ref2) {
       tag = _ref2.tag;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default().createElement(ScriptLoopContainer, null, scripts.length > 0 && scripts.map(function (_ref3) {
     var name = _ref3.name,
-        url = _ref3.url;
+        url = _ref3.url,
+        key = _ref3.key;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default().createElement(ScriptItem, {
-      key: name,
+      key: key,
       name: name,
       url: url,
       tag: tag
@@ -837,67 +838,50 @@ var ScriptLoop = function ScriptLoop(_ref2) {
       allStyleTags = _useState6[0],
       setAllStyleTags = _useState6[1];
 
-  (0,react__WEBPACK_IMPORTED_MODULE_4__.useEffect)( /*#__PURE__*/(0,_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_3___default().mark(function _callee2() {
-    var getCurrentTab, _getCurrentTab, tabID;
+  (0,react__WEBPACK_IMPORTED_MODULE_4__.useEffect)(function () {
+    function getCurrentTab() {
+      return _getCurrentTab.apply(this, arguments);
+    }
 
-    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_3___default().wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            _getCurrentTab = function _getCurrentTab3() {
-              _getCurrentTab = (0,_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_3___default().mark(function _callee() {
-                var queryOptions, _yield$chrome$tabs$qu, _yield$chrome$tabs$qu2, tab;
+    function _getCurrentTab() {
+      _getCurrentTab = (0,_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_3___default().mark(function _callee() {
+        var queryOptions, _yield$chrome$tabs$qu, _yield$chrome$tabs$qu2, tab, tabID;
 
-                return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_3___default().wrap(function _callee$(_context) {
-                  while (1) {
-                    switch (_context.prev = _context.next) {
-                      case 0:
-                        queryOptions = {
-                          active: true,
-                          currentWindow: true
-                        };
-                        _context.next = 3;
-                        return chrome.tabs.query(queryOptions);
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_3___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                queryOptions = {
+                  active: true,
+                  currentWindow: true
+                };
+                _context.next = 3;
+                return chrome.tabs.query(queryOptions);
 
-                      case 3:
-                        _yield$chrome$tabs$qu = _context.sent;
-                        _yield$chrome$tabs$qu2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_yield$chrome$tabs$qu, 1);
-                        tab = _yield$chrome$tabs$qu2[0];
-                        return _context.abrupt("return", tab === null || tab === void 0 ? void 0 : tab.id);
+              case 3:
+                _yield$chrome$tabs$qu = _context.sent;
+                _yield$chrome$tabs$qu2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_yield$chrome$tabs$qu, 1);
+                tab = _yield$chrome$tabs$qu2[0];
+                tabID = tab === null || tab === void 0 ? void 0 : tab.id;
+                chrome.tabs.sendMessage(tabID, {
+                  text: 'report_back'
+                }, function (res) {
+                  setAllScriptTags(res.AllScriptTags);
+                  setAllStyleTags(res.AllStyleTags);
+                });
 
-                      case 7:
-                      case "end":
-                        return _context.stop();
-                    }
-                  }
-                }, _callee);
-              }));
-              return _getCurrentTab.apply(this, arguments);
-            };
+              case 8:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+      return _getCurrentTab.apply(this, arguments);
+    }
 
-            getCurrentTab = function _getCurrentTab2() {
-              return _getCurrentTab.apply(this, arguments);
-            };
-
-            _context2.next = 4;
-            return getCurrentTab();
-
-          case 4:
-            tabID = _context2.sent;
-            chrome.tabs.sendMessage(tabID, {
-              text: 'report_back'
-            }, function (res) {
-              setAllScriptTags(res.AllScriptTags);
-              setAllStyleTags(res.AllStyleTags);
-            });
-
-          case 6:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2);
-  })), []);
+    getCurrentTab();
+  }, []);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default().createElement(PopupContainer, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default().createElement("h4", null, allScriptTags.length, " Scripts / ", allStyleTags.length, " Stylesheet"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default().createElement("input", {
     type: "search",
     placeholder: "search",

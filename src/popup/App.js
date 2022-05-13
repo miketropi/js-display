@@ -64,8 +64,8 @@ export const ScriptLoop = ({ scripts, tag }) => {
   return <ScriptLoopContainer>
     {
       scripts.length > 0 &&
-      scripts.map(({name, url}) => {
-        return <ScriptItem key={ name } name={ name } url={ url } tag={ tag } />
+      scripts.map(({name, url, key}) => {
+        return <ScriptItem key={ key } name={ name } url={ url } tag={ tag } />
       })
     }
   </ScriptLoopContainer>
@@ -76,21 +76,23 @@ export default () => {
   const [allScriptTags, setAllScriptTags] = useState([]);
   const [allStyleTags, setAllStyleTags] = useState([]);
 
-  useEffect(async () => {
+  useEffect(() => {
     async function getCurrentTab() {
       let queryOptions = { active: true, currentWindow: true };
       let [tab] = await chrome.tabs.query(queryOptions);
-      return tab?.id;
+      let tabID = tab?.id;
+
+      chrome.tabs.sendMessage(
+        tabID,
+        { text: 'report_back' },
+        (res) => {
+          setAllScriptTags(res.AllScriptTags);
+          setAllStyleTags(res.AllStyleTags);
+        }
+      )
     }
     
-    let tabID = await getCurrentTab();
-    chrome.tabs.sendMessage(
-      tabID,
-      { text: 'report_back' },
-      (res) => {
-        setAllScriptTags(res.AllScriptTags);
-        setAllStyleTags(res.AllStyleTags);
-      })
+    getCurrentTab();
   }, []) 
 
   return <PopupContainer>
